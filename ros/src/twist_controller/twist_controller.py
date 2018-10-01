@@ -44,8 +44,6 @@ class Controller(object):
 
         self.last_time = rospy.get_time()
 
-
-
     def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
         # Return throttle, brake, steer
         if not dbw_enabled:
@@ -55,7 +53,11 @@ class Controller(object):
 
         current_vel = self.vel_lpf.filt(current_vel)
 
-        rospy.logwarn("angular vel: {0}".format(angular_vel))
+        rospy.logwarn("angular velocity: {0}".format(angular_vel))
+        rospy.logwarn("target velocity: {0}".format(linear_vel))
+        rospy.logwarn("target angular velocity: {0}".format(angular_vel))
+        rospy.logwarn("current velocity: {0}".format(current_vel))
+        rospy.logwarn("filtered velocity: {0}".format(self.vel_lpf.get()))
 
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
         vel_error = linear_vel - current_vel
