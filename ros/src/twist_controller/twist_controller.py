@@ -67,8 +67,8 @@ class Controller(object):
         sample_time = current_time - self.last_time
         self.last_time = current_time
 
-        # throttle = self.throttle_controller.step(vel_error, sample_time)
-        throttle = 0.1
+        throttle = self.throttle_controller.step(vel_error, sample_time)
+        # throttle = 0.1
         brake = 0
 
         if linear_vel == 0.0 and current_vel < 0.1:
