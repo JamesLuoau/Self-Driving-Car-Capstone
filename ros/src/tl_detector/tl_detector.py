@@ -52,6 +52,8 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
+        self.stop_line_positions = self.config['stop_line_positions']
+
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -76,7 +78,7 @@ class TLDetector(object):
 
         """
         self.has_image = True
-        self.camera_image = msg
+        # self.camera_image = msg
         light_wp, state = self.process_traffic_lights()
         rospy.logwarn("recevied image, light way point {0}, state {1}".format(light_wp, state))
 
@@ -144,12 +146,11 @@ class TLDetector(object):
         closest_light = None
         line_wp_idx = None
 
-        stop_line_positions = self.config['stop_line_positions']
         if (self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
             diff = len(self.waypoints.waypoints)
             for i, light in enumerate(self.lights):
-                line = stop_line_positions[i]
+                line = self.stop_line_positions[i]
                 temp_wp_index = self.get_closest_waypoint(line[0], line[1])
                 # find the closest stop line waypoint index
                 d = temp_wp_index - car_wp_idx
